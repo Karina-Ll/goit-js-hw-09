@@ -6,7 +6,7 @@ let formData = {
   message: '',
 };
 
-// Загрузка данных при старте
+// Завантаження з localStorage
 const savedData = localStorage.getItem(STORAGE_KEY);
 
 if (savedData) {
@@ -15,11 +15,14 @@ if (savedData) {
   form.message.value = formData.message;
 }
 
-// Делегирование input
+// Один input-слухач
 form.addEventListener('input', event => {
   const { name, value } = event.target;
 
-  formData[name] = value.trim();
+  // оновлюємо лише відомі поля
+  if (!['email', 'message'].includes(name)) return;
+
+  formData[name] = value;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 });
 
@@ -27,12 +30,15 @@ form.addEventListener('input', event => {
 form.addEventListener('submit', event => {
   event.preventDefault();
 
-  if (!formData.email || !formData.message) {
+  const email = formData.email.trim();
+  const message = formData.message.trim();
+
+  if (!email || !message) {
     alert('Fill please all fields');
     return;
   }
 
-  console.log(formData);
+  console.log({ email, message });
 
   localStorage.removeItem(STORAGE_KEY);
   formData = { email: '', message: '' };
