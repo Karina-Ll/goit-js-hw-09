@@ -38,8 +38,8 @@ form.addEventListener('submit', event => {
     return;
   }
 
-  console.log({ email, message });
-
+  console.log(formData);
+  
   localStorage.removeItem(STORAGE_KEY);
   formData = { email: '', message: '' };
   form.reset();
